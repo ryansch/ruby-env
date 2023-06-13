@@ -155,7 +155,7 @@
                     export PATH="$DEVENV_PROFILE/bin:$DEVENV_ROOT/bin:$BUNDLE_BIN:$PATH"
                     export BOOTSNAP_CACHE_DIR="$DEVENV_ROOT/.devenv/state"
 
-                    if [ ! -f ~/.tmux.conf ] && [ ! -f ~/.config/tmux/tmux.conf ]; then
+                    if [ ! -f ~/.tmux.conf ] && [ ! -f ~/.config/tmux/tmux.conf ] && [ -f "$DEVENV_ROOT/.overmind.tmux.conf" ]; then
                       export OVERMIND_TMUX_CONFIG="$DEVENV_ROOT/.overmind.tmux.conf"
                     fi
                   '';
