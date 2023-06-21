@@ -16,10 +16,14 @@
         (system:
           let
             pkgs = nixpkgs.legacyPackages.${system};
+
+            getoptions = pkgs.getoptions.overrideAttrs (oldAttrs: {
+              doCheck = false;
+            });
           in
           {
             default = devenv.lib.mkShell {
-              inherit inputs pkgs;
+              inherit inputs pkgs getoptions;
               modules = [
                 {
                   packages = with pkgs; [
@@ -34,6 +38,7 @@
                     tmuxPlugins.sensible
                     tmuxPlugins.yank
                     reattach-to-user-namespace
+                  ] ++ [
                     getoptions
                   ];
 
