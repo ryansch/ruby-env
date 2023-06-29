@@ -7,63 +7,61 @@
     nixpkgs-ruby.inputs.nixpkgs.follows = "nixpkgs";
     dev-cli.url = "github:detaso/dev-cli";
     dev-cli.inputs.nixpkgs.follows = "nixpkgs";
-    dev-cli.flake = true;
   };
 
-  outputs = { self, nixpkgs, devenv, systems, nixpkgs-ruby, ... } @ inputs:
-    let
-      forEachSystem = nixpkgs.lib.genAttrs (import systems);
-    in
-    {
-      devShells = forEachSystem
-        (system:
-          let
-            pkgs = nixpkgs.legacyPackages.${system};
-            dev-cli = inputs.dev-cli.packages.${system}.default;
-          in
-          {
-            default = devenv.lib.mkShell {
-              inherit inputs pkgs;
-              modules = [
-                {
-                  packages = with pkgs; [
-                    git
-                    nodejs-18_x
-                    yarn
-                    postgresql_14
-                    zlib
-                    zstd
-                    libiconv
-                    tmux
-                    tmuxPlugins.sensible
-                    tmuxPlugins.yank
-                    reattach-to-user-namespace
-                  ] ++ [
-                    dev-cli
-                  ];
+  outputs = inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.devenv.flakeModule
+      ];
+      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
 
-                  languages.ruby.enable = true;
-                  languages.ruby.bundler.enable = false;
-                  languages.ruby.version = "3.2.2";
+      perSystem = { config, self', inputs', pkgs, system, ... }: {
+        # Per-system attributes can be defined here. The self' and inputs'
+        # module parameters provide easy access to attributes of the same
+        # system.
 
-                  enterShell = ''
-                    export BUNDLE_BIN="$DEVENV_ROOT/.devenv/bin"
-                    export PATH="$DEVENV_PROFILE/bin:$DEVENV_ROOT/bin:$BUNDLE_BIN:$PATH"
-                    export BOOTSNAP_CACHE_DIR="$DEVENV_ROOT/.devenv/state"
+        devenv.shells.default = let
+          dev-cli = inputs.dev-cli.packages.${system}.default;
+        in {
+          # https://devenv.sh/reference/options/
 
-                    if [ ! -f ~/.tmux.conf ] && [ ! -f ~/.config/tmux/tmux.conf ] && [ -f "$DEVENV_ROOT/.overmind.tmux.conf" ]; then
-                      export OVERMIND_TMUX_CONFIG="$DEVENV_ROOT/.overmind.tmux.conf"
-                    fi
-                  '';
+          packages = with pkgs; [
+            git
+            nodejs-18_x
+            yarn
+            postgresql_14
+            zlib
+            zstd
+            libiconv
+            tmux
+            tmuxPlugins.sensible
+            tmuxPlugins.yank
+            reattach-to-user-namespace
+          ] ++ [
+            dev-cli
+          ];
 
-                  env.OVERMIND_NO_PORT=1;
-                  env.OVERMIND_ANY_CAN_DIE=1;
-                  process.implementation = "overmind";
+          languages.ruby.enable = true;
+          languages.ruby.bundler.enable = false;
+          languages.ruby.version = "3.2.2";
 
-                  env.RUBY_DEBUG_SOCK_DIR = "/tmp/";
-                }
-              ];
-            };
-          });
+          enterShell = ''
+            export BUNDLE_BIN="$DEVENV_ROOT/.devenv/bin"
+            export PATH="$DEVENV_PROFILE/bin:$DEVENV_ROOT/bin:$BUNDLE_BIN:$PATH"
+            export BOOTSNAP_CACHE_DIR="$DEVENV_ROOT/.devenv/state"
+
+            if [ ! -f ~/.tmux.conf ] && [ ! -f ~/.config/tmux/tmux.conf ] && [ -f "$DEVENV_ROOT/.overmind.tmux.conf" ]; then
+              export OVERMIND_TMUX_CONFIG="$DEVENV_ROOT/.overmind.tmux.conf"
+            fi
+          '';
+
+          env.OVERMIND_NO_PORT=1;
+          env.OVERMIND_ANY_CAN_DIE=1;
+          process.implementation = "overmind";
+
+          env.RUBY_DEBUG_SOCK_DIR = "/tmp/";
+        };
+      };
     };
 }
