@@ -9,11 +9,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1688056457,
-        "narHash": "sha256-ISsimZ4AU2iv1X+jSbVN/jcJsGQsJSKzb1PHtWcuTP0=",
+        "lastModified": 1688133858,
+        "narHash": "sha256-UeibsB2V5vozsqJAazx36d9oRmzXqlid8cpRdE9Hj1c=",
         "owner": "detaso",
         "repo": "dev-cli",
-        "rev": "5d35ffea7dd3898333d5d8c7e6d3cc3e20094e85",
+        "rev": "bb6f0c892a67e90efd8119d5ceb0873b48b28e68",
         "type": "github"
       },
       "original": {
