@@ -27,17 +27,19 @@
           # https://devenv.sh/reference/options/
 
           packages = with pkgs; [
+            chromedriver
             git
-            nodejs-18_x
-            yarn
-            postgresql_14
-            zlib
-            zstd
             libiconv
+            mysql80
+            nodejs-18_x
+            postgresql_14
+            reattach-to-user-namespace
             tmux
             tmuxPlugins.sensible
             tmuxPlugins.yank
-            reattach-to-user-namespace
+            yarn
+            zlib
+            zstd
           ] ++ [
             dev-cli
           ];
@@ -58,6 +60,7 @@
 
           env.OVERMIND_NO_PORT=1;
           env.OVERMIND_ANY_CAN_DIE=1;
+          env.OVERMIND_SKIP_ENV=1;
           process.implementation = "overmind";
 
           env.RUBY_DEBUG_SOCK_DIR = "/tmp/";
