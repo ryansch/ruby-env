@@ -64,6 +64,9 @@
           process.implementation = "overmind";
 
           env.RUBY_DEBUG_SOCK_DIR = "/tmp/";
+
+          # Don't autoload .env files
+          dotenv.disableHint = true;
         };
       };
     };
