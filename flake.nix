@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     systems.url = "github:nix-systems/default";
-    devenv.url = "github:cachix/devenv";
+    devenv.url = "github:cachix/devenv/9ba9e3b908a12ddc6c43f88c52f2bf3c1d1e82c1";
     nixpkgs-ruby.url = "github:bobvanderlinden/nixpkgs-ruby";
     nixpkgs-ruby.inputs.nixpkgs.follows = "nixpkgs";
     dev-cli.url = "github:detaso/dev-cli";
@@ -27,10 +27,8 @@
           # https://devenv.sh/reference/options/
 
           packages = with pkgs; [
-            chromedriver
             git
             libiconv
-            mysql80
             nodejs-18_x
             postgresql_14
             reattach-to-user-namespace
@@ -46,6 +44,7 @@
 
           languages.ruby.enable = true;
           languages.ruby.bundler.enable = false;
+          # languages.ruby.versionFile = ./.ruby-version;
           languages.ruby.version = "3.2.2";
 
           enterShell = ''
@@ -66,7 +65,7 @@
           env.RUBY_DEBUG_SOCK_DIR = "/tmp/";
 
           # Don't autoload .env files
-          dotenv.disableHint = true;
+          # dotenv.disableHint = true;
         };
       };
     };
