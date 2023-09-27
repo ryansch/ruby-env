@@ -29,6 +29,7 @@
           packages = with pkgs; [
             git
             libiconv
+            libyaml
             nodejs-18_x
             postgresql_14
             reattach-to-user-namespace
