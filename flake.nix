@@ -33,6 +33,7 @@
             nodejs-18_x
             postgresql_14
             reattach-to-user-namespace
+            sqlite
             tmux
             tmuxPlugins.sensible
             tmuxPlugins.yank
