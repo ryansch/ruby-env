@@ -31,6 +31,7 @@
             libiconv
             libyaml
             nodejs-18_x
+            openssl
             postgresql_14
             reattach-to-user-namespace
             sqlite
