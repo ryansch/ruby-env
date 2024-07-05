@@ -48,7 +48,7 @@
           languages.ruby.enable = true;
           languages.ruby.bundler.enable = false;
           # languages.ruby.versionFile = ./.ruby-version;
-          languages.ruby.version = "3.2.4";
+          languages.ruby.version = "3.3.3";
 
           enterShell = ''
             export BUNDLE_BIN="$DEVENV_ROOT/.devenv/bin"
